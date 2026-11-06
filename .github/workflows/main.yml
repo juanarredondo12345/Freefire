@@ -1,21 +1,26 @@
-name: Build
+name: Android Build Fix
 
 on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Java
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Make gradlew executable
-        run: chmod +x gradlew
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
         
-      - name: Build
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        
+      - name: Build with Gradle
         run: ./gradlew assembleDebug
