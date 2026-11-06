@@ -1,19 +1,17 @@
-name: Build and Deploy AimBot App
+name: Build Android App
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+    # 1. Obtener el código
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # 2. Configurar Java (Este es el paso que te fallaba)
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
@@ -21,14 +19,17 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
+    # 3. Dar permisos de ejecución al script de Gradle
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    # 4. Construir la app (Debug)
     - name: Build with Gradle
       run: ./gradlew assembleDebug
 
+    # 5. Subir el APK generado como artefacto
     - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
-        name: app-debug.apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: app-debug
+        path: app/build/outputs/apk/debug/*.apk
