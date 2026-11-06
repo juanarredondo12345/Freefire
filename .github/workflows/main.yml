@@ -23,8 +23,9 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleDebug
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
+          - uses: actions/checkout@v4
+        with:
+          lfs: true
+          
         name: app-debug
         path: app/build/outputs/apk/debug/*.apk
