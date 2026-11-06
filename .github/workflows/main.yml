@@ -17,7 +17,7 @@ jobs:
           distribution: 'temurin'
           
       - name: Grant execute permission
-        run: chmod +x gradlew ./gradlew
+        run: chmod +x ./gradlew
         
       - name: Build with Gradle
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --info
