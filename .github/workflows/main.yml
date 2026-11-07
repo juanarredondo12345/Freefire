@@ -16,11 +16,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Download Gradle
+      - name: Download Gradle 8.5 (Stable)
         run: |
-          curl -L https://services.gradle.org/distributions/gradle-8.0-bin.zip -o gradle.zip
+          curl -L https://services.gradle.org/distributions/gradle-8.5-bin.zip -o gradle.zip
           unzip -q gradle.zip
-          export PATH=$PWD/gradle-8.0/bin:$PATH
+          export PATH=$PWD/gradle-8.5/bin:$PATH
           
       - name: Build and Save Error Log
         run: |
