@@ -16,11 +16,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Verify and Fix Permissions
-        run: |
-          ls -l gradlew
-          chmod +x gradlew
-          chmod +x ./gradlew
-          
+      - name: Grant execute permission
+        run: chmod +x ./gradlew
+        
       - name: Build with Gradle
         run: ./gradlew assembleDebug --info
