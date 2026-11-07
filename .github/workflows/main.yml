@@ -19,11 +19,13 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x gradlew
         
-      - name: Build APK
-        run: ./gradlew assembleDebug
-        
-      - name: Upload APK
+      - name: Build and Log Errors
+        run: |
+          ./gradlew assembleDebug --stacktrace > build_log.txt 2>&1 || true
+          
+      - name: Upload Log
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          name: error-log
+          path: build_log.txt
