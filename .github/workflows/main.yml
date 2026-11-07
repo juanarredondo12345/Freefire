@@ -1,4 +1,4 @@
-name: Android Build
+name: Android CI Build
 
 on: [push]
 
@@ -16,12 +16,24 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Download Gradle
+      - name: Download and Setup Gradle
         run: |
           curl -L https://services.gradle.org/distributions/gradle-8.0-bin.zip -o gradle.zip
           unzip -q gradle.zip
-          export PATH=$PWD/gradle-8.0/bin:$PATH
+          export GRADLE_HOME=$PWD/gradle-8.0
+          export PATH=$GRADLE_HOME/bin:$PATH
           
-      - name: Build with Gradle
+      - name: Make gradlew executable (if exists)
         run: |
-          gradle assembleDebug --stacktrace
+          if [ -f "./gradlew" ]; then
+            chmod +x ./gradlew
+          fi
+          
+      - name: Build Project
+        run: |
+          # Intenta usar gradlew si existe, si no, usa el comando gradle global
+          if [ -f "./gradlew" ]; then
+            ./gradlew assembleDebug --stacktrace
+          else
+            gradle assembleDebug --stacktrace
+          fi
