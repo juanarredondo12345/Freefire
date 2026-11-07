@@ -1,4 +1,4 @@
-name: Android CI Build
+name: Android Build
 
 on: [push]
 
@@ -16,24 +16,19 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Download and Setup Gradle
+      - name: Download Gradle
         run: |
           curl -L https://services.gradle.org/distributions/gradle-8.0-bin.zip -o gradle.zip
           unzip -q gradle.zip
-          export GRADLE_HOME=$PWD/gradle-8.0
-          export PATH=$GRADLE_HOME/bin:$PATH
+          export PATH=$PWD/gradle-8.0/bin:$PATH
           
-      - name: Make gradlew executable (if exists)
+      - name: Build and Save Error Log
         run: |
-          if [ -f "./gradlew" ]; then
-            chmod +x ./gradlew
-          fi
+          gradle assembleDebug --stacktrace > build_log.txt 2>&1 || true
           
-      - name: Build Project
-        run: |
-          # Intenta usar gradlew si existe, si no, usa el comando gradle global
-          if [ -f "./gradlew" ]; then
-            ./gradlew assembleDebug --stacktrace
-          else
-            gradle assembleDebug --stacktrace
-          fi
+      - name: Upload Log
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: error-log
+          path: build_log.txt
