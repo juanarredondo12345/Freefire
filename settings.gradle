@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MiApp" // <--- Cambia esto por el nombre de tu proyecto
+rootProject.name = "MiApp" // Cambia esto por el nombre real de tu proyecto
 include ':app'
